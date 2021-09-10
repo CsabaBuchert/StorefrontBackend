@@ -5,38 +5,53 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## API Endpoints
 #### Products
-- Index 
-- Show (args: product id)
-- Create (args: Product)[token required]
-- [OPTIONAL] Top 5 most popular products 
-- [OPTIONAL] Products by category (args: product category)
+- Index ([Get] /products)
+- Show (args: product id) ([Get] /products/:id)
+- Create (args: Product)[token required] ([Post] /products)
+- [OPTIONAL] Top 5 most popular products ([Get] /products_most_popular)
+- [OPTIONAL] Products by category (args: product category) ([Get] /products_by_category/:category)
 
 #### Users
-- Index [token required]
-- Show (args: id)[token required]
-- Create (args: User)[token required]
+- Index [token required] ([Get] /users)
+- Show (args: id)[token required] ([Get] /users/:id)
+- Create (args: User) ([Post] /users)
 
 #### Orders
-- Current Order by user (args: user id)[token required]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
+- Current Order by user (args: user id)[token required] ([Get] /orders/:id)
+- [OPTIONAL] Completed Orders by user (args: user id)[token required] ([Get] /orders_completed/:id)
 
 ## Data Shapes
 #### Product
--  id
+- id
 - name
 - price
 - [OPTIONAL] category
 
+###### Table:
+    Products (id:serial key, name:varchar, price:number, category:varchar)
+
 #### User
 - id
-- firstName
-- lastName
+- first_name
+- last_name
 - password
+
+###### Table:
+    Users (id: serial key, first_name: varchar, last_name: varchar, password: varchar)
 
 #### Orders
 - id
-- id of each product in the order
-- quantity of each product in the order
 - user_id
 - status of order (active or complete)
 
+###### Table:
+    Orders (id: serial key, user_id: integer[foreign key to Users table], status: varchar)
+
+#### Order products table
+- id
+- order_id
+- product_id
+- quantity
+
+###### Table:
+    OrderProducts (id: serial key, order_id: integer[foreign key to Orders table], product_id: integer[foreign key to Products table], quantity: integer)
