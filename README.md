@@ -34,3 +34,11 @@
         POSTGRES_USER = 'test_user'
         POSTGRES_PASSWORD = 'password123'
         ENV=dev
+3. create migration tables
+    - npm install db-migrate -g
+    - npm install db-migrate-pg -g
+    - create migrations folder next to src folder
+    - db-migrate create <table name> --sql-file
+    - create sql commands to *-down.sql/*-up.sql files
+    - db-migrate up
+    - db-migrate down

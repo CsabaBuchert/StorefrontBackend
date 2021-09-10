@@ -11,7 +11,7 @@
             "ENV": "POSTGRES_USER"
         },
         "password": {
-            "env": "POSTGRES_PASSWORD"
+            "ENV": "POSTGRES_PASSWORD"
         }
     },
     "test": {
@@ -26,7 +26,7 @@
             "ENV": "POSTGRES_USER"
         },
         "password": {
-            "env": "POSTGRES_PASSWORD"
+            "ENV": "POSTGRES_PASSWORD"
         }
     }
 }
