@@ -74,8 +74,8 @@ describe("User Model", () => {
     });
 
     it('delete method should remove the user', async () => {
-        store.delete("1");
-        const result = await store.index()
+        await store.delete("1");
+        const result = await store.index();
 
         expect(result.length).toEqual(1);
         expect(result[0].id).toEqual(2);
