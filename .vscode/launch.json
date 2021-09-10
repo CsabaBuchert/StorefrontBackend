@@ -1,0 +1,29 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Typescript Launch Program",
+            "program": "C:/Work/GitHub/StorefrontBackend/out/server.js",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Jasmine Individual Test",
+            "program": "C:/Work/GitHub/StorefrontBackend/node_modules/jasmine/bin/jasmine.js",
+            "args": [
+                "out/tests/models/usersSpec.js"
+            ],
+            "env": {
+                "NODE_PATH": "."
+            }
+        }
+    ]
+}
