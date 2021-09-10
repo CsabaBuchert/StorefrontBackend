@@ -4,9 +4,13 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./out --onSuccess \"node ./out/server.js\"",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "tsc": "tsc"
+    "jasmine": "jasmine",
+    "build": "npx tsc",
+    "clean-test": "db-migrate down --env test -c 4",
+    "prepare-test": "npm run clean-test && db-migrate --env test up",
+    "test": "npm run build && npm run prepare-test && npm run jasmine || npm run clean-test",
+    "tsc": "tsc",
+    "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./out --onSuccess \"node ./out/server.js\""
   },
   "repository": {
     "type": "git",
@@ -19,16 +23,28 @@
   },
   "homepage": "https://github.com/CsabaBuchert/StorefrontBackend#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "db-migrate": "^0.11.12",
     "db-migrate-pg": "^1.2.2",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "pg": "^8.7.1",
     "typescript": "^4.4.2"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/body-parser": "^1.19.1",
+    "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.13",
+    "@types/jasmine": "^3.9.0",
+    "@types/pg": "^8.6.1",
+    "@types/supertest": "^2.0.11",
     "@types/typescript": "^2.0.0",
+    "jasmine": "^3.9.0",
+    "jasmine-spec-reporter": "^7.0.0",
+    "jasmine-ts": "^0.4.0",
+    "supertest": "^6.1.6",
     "tsc-watch": "^4.5.0"
   }
 }
