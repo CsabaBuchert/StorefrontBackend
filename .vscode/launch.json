@@ -16,14 +16,14 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Jasmine Individual Test",
-            "program": "C:/Work/GitHub/StorefrontBackend/node_modules/jasmine/bin/jasmine.js",
+            "name": "Jasmine Current File",
+            "program": "${cwd}/node_modules/jasmine-ts/lib/index",
             "args": [
-                "out/tests/models/usersSpec.js"
+                "--config=./spec/support/jasmine.json",
+                "${file}"
             ],
-            "env": {
-                "NODE_PATH": "."
-            }
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
         }
     ]
 }
