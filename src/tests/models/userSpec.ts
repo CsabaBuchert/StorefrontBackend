@@ -17,7 +17,7 @@ describe("User Model", () => {
         expect(store.create).toBeDefined();
     });
 
-    it('should have a edit method', () => {
+    it('should have an edit method', () => {
         expect(store.edit).toBeDefined();
     });
 

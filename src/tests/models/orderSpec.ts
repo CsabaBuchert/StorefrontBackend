@@ -1,4 +1,4 @@
-import { Order, OrderStore } from '../../models/orders';
+import { Order, OrderStore } from '../../models/order';
 import { User, UserStore } from '../../models/user';
 
 const store = new OrderStore()
