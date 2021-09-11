@@ -35,7 +35,7 @@ describe("Order Model", () => {
         expect(store.create).toBeDefined();
     });
 
-    it('should have a edit method', () => {
+    it('should have an edit method', () => {
         expect(store.edit).toBeDefined();
     });
 
@@ -45,17 +45,19 @@ describe("Order Model", () => {
 
     it('create method should add an order', async () => {
         order1 = await store.create({
-            user_id: user1.id as unknown as string,
+            user_id: user1.id as number,
             status: 'pending'
         });
-        expect(order1.user_id).toEqual(user1.id as unknown as string);
+
+        // ToDo: I don't understand why necessary this "hack": user_id type is number, but typeof says is string...
+        expect(parseInt(order1.user_id as unknown as string)).toEqual(user1.id as number);
         expect(order1.status).toEqual('pending');
 
         order2 = await store.create({
-            user_id: user2.id as unknown as string,
+            user_id: user2.id as number,
             status: "completed"
         });
-        expect(order2.user_id).toEqual(user2.id as unknown as string);
+        expect(parseInt(order2.user_id as unknown as string)).toEqual(user2.id as number);
         expect(order2.status).toEqual('completed');
     });
 
@@ -64,17 +66,17 @@ describe("Order Model", () => {
 
         expect(result.length).toEqual(2);
 
-        expect(result[0].user_id).toEqual(user1.id as unknown as string);
+        expect(parseInt(result[0].user_id as unknown as string)).toEqual(user1.id as number);
         expect(result[0].status).toEqual('pending');
 
-        expect(result[1].user_id).toEqual(user2.id as unknown as string);
+        expect(parseInt(result[1].user_id as unknown as string)).toEqual(user2.id as number);
         expect(result[1].status).toEqual('completed');
     });
 
     it('show method should return the correct order', async () => {
         const result = await store.show("1");
 
-        expect(result.user_id).toEqual(user1.id as unknown as string);
+        expect(parseInt(result.user_id as unknown as string)).toEqual(user1.id as number);
         expect(result.status).toEqual('pending');
     });
 
@@ -83,7 +85,7 @@ describe("Order Model", () => {
         const result = await store.index()
 
         expect(result.length).toEqual(1);
-        expect(result[0].user_id).toEqual(user2.id as unknown as string);
+        expect(parseInt(result[0].user_id as unknown as string)).toEqual(user2.id as number);
         expect(result[0].status).toEqual('completed');
     });
 
