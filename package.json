@@ -4,11 +4,11 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "jasmine": "jasmine",
     "build": "npx tsc",
     "clean-test": "db-migrate down --env test -c 4",
     "prepare-test": "npm run clean-test && db-migrate --env test up",
-    "test": "npm run build && npm run prepare-test && npm run jasmine || npm run clean-test",
+    "test": "npm run build && npm run prepare-test && jasmine || npm run clean-test",
+    "test-ts": "npm run build && npm run prepare-test && jasmine-ts || npm run clean-test",
     "tsc": "tsc",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./out --onSuccess \"node ./out/server.js\""
   },
@@ -30,6 +30,7 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "pg": "^8.7.1",
+    "ts-node": "^10.2.1",
     "typescript": "^4.4.2"
   },
   "devDependencies": {
