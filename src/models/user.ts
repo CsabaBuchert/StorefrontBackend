@@ -40,7 +40,7 @@ export class UserStore {
 
     async create(user: User): Promise<User> {
         try {
-            const sql = 'INSERT INTO users (first_name, last_name, password) VALUES($1, $2, $3) RETURNING *'
+            const sql = 'INSERT INTO users (first_name, last_name, password) VALUES($1, $2, $3) RETURNING *';
             const conn = await Client.connect();
             const hash = bcrypt.hashSync(user.password + this.pepper, this.saltRounds);
             const result = await conn.query(sql, [user.first_name, user.last_name, hash]);
@@ -55,7 +55,7 @@ export class UserStore {
 
     async edit(user: User): Promise<User> {
         try {
-            const sql = 'UPDATE users SET first_name = $2 last_name = $3 password = $4) WHERE id=$1'
+            const sql = 'UPDATE users SET first_name = $2 last_name = $3 password = $4) WHERE id=$1';
             const conn = await Client.connect();
             const hash = bcrypt.hashSync(user.password + this.pepper, this.saltRounds);
             const result = await conn.query(sql, [user.id, user.first_name, user.last_name, hash]);
@@ -70,7 +70,7 @@ export class UserStore {
 
     async delete(id: string): Promise<User> {
         try {
-            const sql = 'DELETE FROM users WHERE id=($1)'
+            const sql = 'DELETE FROM users WHERE id=($1)';
             const conn = await Client.connect();
             const result = await conn.query(sql, [id]);
             const ret = result.rows[0];
@@ -79,6 +79,17 @@ export class UserStore {
             return ret;
         } catch (err) {
             throw new Error(`Could not delete user ${id}. Error: ${err}`)
+        }
+    }
+
+    async deleteAll() {
+        try {
+            const sql = 'DELETE FROM users';
+            const conn = await Client.connect();
+            const ret = await conn.query(sql);
+            conn.release();
+        } catch (err) {
+            throw new Error(`Could not delete users. Error: ${err}`)
         }
     }
 
