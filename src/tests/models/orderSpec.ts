@@ -11,6 +11,8 @@ let user2: User;
 
 describe("Order Model", () => {
     beforeAll(async () => {
+        console.log('Order Model - beforeAll');
+
         user1 = await userStore.create({
             first_name: 'User',
             last_name: 'One',
@@ -44,6 +46,9 @@ describe("Order Model", () => {
     });
 
     it('create method should add an order', async () => {
+        console.log('u1: ' + user1.id);
+        console.log('u2: ' + user2.id);
+
         order1 = await store.create({
             user_id: user1.id as number,
             status: 'pending'
@@ -74,7 +79,7 @@ describe("Order Model", () => {
     });
 
     it('show method should return the correct order', async () => {
-        const result = await store.show("1");
+        const result = await store.show(order1.id as unknown as string);
 
         expect(parseInt(result.user_id as unknown as string)).toEqual(user1.id as number);
         expect(result.status).toEqual('pending');

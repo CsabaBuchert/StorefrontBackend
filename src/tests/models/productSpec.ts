@@ -1,6 +1,8 @@
 import { Product, ProductStore } from '../../models/product';
 
 const store = new ProductStore()
+let product1: Product;
+let product2: Product;
 
 describe("Product Model", () => {
     it('should have an index method', () => {
@@ -24,23 +26,23 @@ describe("Product Model", () => {
     });
 
     it('create method should add a product', async () => {
-        const result1 = await store.create({
+        product1 = await store.create({
             name: 'Monitor',
             price: 100,
             category: "pc accessories"
         });
-        expect(result1.name).toEqual('Monitor');
-        expect(result1.price).toEqual(100);
-        expect(result1.category).toEqual('pc accessories');
+        expect(product1.name).toEqual('Monitor');
+        expect(product1.price).toEqual(100);
+        expect(product1.category).toEqual('pc accessories');
 
-        const result2 = await store.create({
+        product2 = await store.create({
             name: 'Mouse',
             price: 2,
             category: "pc accessories"
         });
-        expect(result2.name).toEqual('Mouse');
-        expect(result2.price).toEqual(2);
-        expect(result2.category).toEqual('pc accessories');
+        expect(product2.name).toEqual('Mouse');
+        expect(product2.price).toEqual(2);
+        expect(product2.category).toEqual('pc accessories');
     });
 
     it('index method should return a list of products', async () => {
@@ -58,7 +60,7 @@ describe("Product Model", () => {
     });
 
     it('show method should return the correct product', async () => {
-        const result = await store.show("1");
+        const result = await store.show(product1.id as unknown as string);
 
         expect(result.name).toEqual('Monitor');
         expect(result.price).toEqual(100);
@@ -66,12 +68,19 @@ describe("Product Model", () => {
     });
 
     it('delete method should remove the product', async () => {
-        await store.delete("1");
+        await store.delete(product1.id as unknown as string);
         const result = await store.index();
 
         expect(result.length).toEqual(1);
         expect(result[0].name).toEqual('Mouse');
         expect(result[0].price).toEqual(2);
         expect(result[0].category).toEqual('pc accessories');
+    });
+
+    it('deleteAll method should remove products', async () => {
+        await store.deleteAll();
+        const result = await store.index();
+
+        expect(result.length).toEqual(0);
     });
 });
