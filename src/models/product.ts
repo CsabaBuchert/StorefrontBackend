@@ -1,4 +1,4 @@
-import Client from '../database'
+import { ModelStoreBase } from './modelBase'
 
 export type Product = {
     id?: number;
@@ -7,85 +7,18 @@ export type Product = {
     category: string;
 }
 
-export class ProductStore {
-
-    async index(): Promise<Product[]> {
-        try {
-            const conn = await Client.connect();
-            const sql = 'SELECT * FROM products';
-            const result = await conn.query(sql);
-            conn.release();
-
-            return result.rows;
-        } catch (err) {
-            throw new Error(`Could not get products. Error: ${err}`);
-        }
-    }
-
-    async show(id: string): Promise<Product> {
-        try {
-            const sql = 'SELECT * FROM products WHERE id=($1)';
-            const conn = await Client.connect();
-            const result = await conn.query(sql, [id]);
-            conn.release();
-
-            return result.rows[0];
-        } catch (err) {
-            throw new Error(`Could not get product ${id}. Error: ${err}`)
-        }
+export class ProductStore extends ModelStoreBase<Product> {
+    constructor() {
+        super("products");
     }
 
     async create(product: Product): Promise<Product> {
-        try {
-            const sql = 'INSERT INTO products (name, price, category) VALUES($1, $2, $3) RETURNING *'
-            const conn = await Client.connect();
-            const result = await conn.query(sql, [product.name, product.price, product.category]);
-            const ret = result.rows[0];
-            conn.release();
-
-            return ret;
-        } catch (err) {
-            throw new Error(`Could not add product ${product.name}. Error: ${err}`);
-        }
+        const result = await this.runQuery(`INSERT INTO ${this.database} (name, price, category) VALUES($1, $2, $3) RETURNING *`, [product.name, product.price, product.category]);
+        return result.rows[0];
     }
 
     async edit(product: Product): Promise<Product> {
-        try {
-            const sql = 'UPDATE products SET name = $2 price = $3 category = $4) WHERE id=$1'
-            const conn = await Client.connect();
-            const result = await conn.query(sql, [product.id, product.name, product.price, product.category]);
-            const ret = result.rows[0];
-            conn.release();
-
-            return ret;
-        } catch (err) {
-            throw new Error(`Could not edit product ${product.name}. Error: ${err}`);
-        }
-    }
-
-    async delete(id: string): Promise<Product> {
-        try {
-            const sql = 'DELETE FROM products WHERE id=($1)'
-            const conn = await Client.connect();
-            const result = await conn.query(sql, [id]);
-            const ret = result.rows[0];
-            conn.release();
-
-            return ret;
-        } catch (err) {
-            throw new Error(`Could not delete product ${id}. Error: ${err}`)
-        }
-    }
-
-    async deleteAll() {
-        try {
-            const sql = 'DELETE FROM products'
-            const conn = await Client.connect();
-            await conn.query(sql);
-            conn.release();
-
-        } catch (err) {
-            throw new Error(`Could not delete products. Error: ${err}`)
-        }
+        const result = await this.runQuery(`UPDATE ${this.database} SET name = $2 price = $3 category = $4) WHERE id=$1`, [product.id, product.name, product.price, product.category]);
+        return result.rows[0];
     }
 }
