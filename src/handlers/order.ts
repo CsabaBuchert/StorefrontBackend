@@ -8,7 +8,7 @@ export default class OrderHandler extends HandlerBase<Order, OrderStore> {
     }
 
     override async create(req: Request, res: Response): Promise<void> {
-        await this.handleRequest(req, res, async (req) => {
+        await this.handleRequest(true, req, res, async (req) => {
             return await this.store.create({
                 user_id: req.body.user_id,
                 status: req.body.staus ?? "new"
@@ -17,7 +17,7 @@ export default class OrderHandler extends HandlerBase<Order, OrderStore> {
     }
 
     override async edit(req: Request, res: Response): Promise<void> {
-        await this.handleRequest(req, res, async (req) => {
+        await this.handleRequest(false, req, res, async (req) => {
             return await this.store.edit({
                 id: req.body.id,
                 user_id: req.body.user_id,

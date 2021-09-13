@@ -8,7 +8,7 @@ export default class ProductHandler extends HandlerBase<Product, ProductStore> {
     }
 
     override async create(req: Request, res: Response): Promise<void> {
-        await this.handleRequest(req, res, async (req) => {
+        await this.handleRequest(true, req, res, async (req) => {
             return await this.store.create({
                 name: req.body.name,
                 price: req.body.price,
@@ -18,7 +18,7 @@ export default class ProductHandler extends HandlerBase<Product, ProductStore> {
     }
 
     override async edit(req: Request, res: Response): Promise<void> {
-        await this.handleRequest(req, res, async (req) => {
+        await this.handleRequest(false, req, res, async (req) => {
             return await this.store.edit({
                 id: req.body.id,
                 name: req.body.name,

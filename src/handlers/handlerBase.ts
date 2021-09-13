@@ -1,23 +1,23 @@
-import express, { Request, Response } from 'express'
+import { Request, Response } from 'express'
 import jwt from "jsonwebtoken"
 import { ModelStoreBase } from '../models/modelBase';
 
 export abstract class HandlerBase<ModelType, ModelStoreType extends ModelStoreBase<ModelType>> {
     protected store: ModelStoreType;
-    private useJws: boolean;
+    //private useJws: boolean;
 
     constructor(type: { new(): ModelStoreType; }) {
         this.store = new type();
-        this.useJws = parseInt(process.env.TOKEN_SECRET as unknown as string) == 1;
+        //this.useJws = process.env.USE_JWS != undefined ? (parseInt(process.env.USE_JWS as unknown as string) == 1) : true;
     }
 
-    protected async handleRequest(req: Request, res: Response, store_func: (req: Request) => any): Promise<void> {
+    protected async handleRequest(useJwt: boolean, req: Request, res: Response, store_func: (req: Request) => any): Promise<void> {
         try {
             const result = await store_func(req);
-            if (this.useJws) {
-                res.json(jwt.sign({ result: result }, process.env.TOKEN_SECRET as unknown as string));
+            if (useJwt) {
+                res.json(jwt.sign(result, process.env.TOKEN_SECRET as unknown as string));
             } else {
-                res.json({ result: result });
+                res.json(result);
             }
         } catch (err) {
             res.status(400);
@@ -26,13 +26,13 @@ export abstract class HandlerBase<ModelType, ModelStoreType extends ModelStoreBa
     }
 
     async index(req: Request, res: Response): Promise<void> {
-        await this.handleRequest(req, res, async () => {
+        await this.handleRequest(false, req, res, async () => {
             return await this.store.index();
         });
     }
 
     async show(req: Request, res: Response): Promise<void> {
-        await this.handleRequest(req, res, async (req) => {
+        await this.handleRequest(false, req, res, async (req) => {
             return await this.store.show(req.body.id);
         });
     }
@@ -42,7 +42,7 @@ export abstract class HandlerBase<ModelType, ModelStoreType extends ModelStoreBa
     abstract edit(req: Request, res: Response): Promise<void>;
 
     async delete(req: Request, res: Response): Promise<void> {
-        await this.handleRequest(req, res, async (req) => {
+        await this.handleRequest(false, req, res, async (req) => {
             return await this.store.delete(req.body.id);
         });
     }

@@ -8,7 +8,7 @@ export default class UserHandler extends HandlerBase<User, UserStore> {
     }
 
     override async create(req: Request, res: Response): Promise<void> {
-        await this.handleRequest(req, res, async (req) => {
+        await this.handleRequest(true, req, res, async (req) => {
             return await this.store.create({
                 user_name: req.body.user_name,
                 first_name: req.body.first_name,
@@ -19,7 +19,7 @@ export default class UserHandler extends HandlerBase<User, UserStore> {
     }
 
     override async edit(req: Request, res: Response): Promise<void> {
-        await this.handleRequest(req, res, async (req) => {
+        await this.handleRequest(false, req, res, async (req) => {
             return await this.store.edit({
                 id: req.body.id,
                 user_name: req.body.user_name,
@@ -31,7 +31,7 @@ export default class UserHandler extends HandlerBase<User, UserStore> {
     }
 
     async authenticate(req: Request, res: Response): Promise<void> {
-        await this.handleRequest(req, res, async (req) => {
+        await this.handleRequest(true, req, res, async (req) => {
             return await this.store.authenticate(req.body.user_name, req.body.password);
         });
     }
