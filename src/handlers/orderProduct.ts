@@ -8,7 +8,7 @@ export default class OrderProductHandler extends HandlerBase<OrderProduct, Order
     }
 
     override async create(req: Request, res: Response): Promise<void> {
-        await this.handleRequest(true, req, res, async (req) => {
+        await this.handleRequest(false, req, res, async (req) => {
             return await this.store.create({
                 order_id: req.body.order_id,
                 product_id: req.body.product_id,

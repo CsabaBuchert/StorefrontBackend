@@ -29,8 +29,7 @@ describe('Test orders endpoints', () => {
             user_id: user.id,
             status: 'new'
         }).set('Authorization', token);
-        token = response.body as string;
-        order = jwt.decode(token) as Order;
+        order = response.body as Order;
         expect(parseInt(order.user_id as unknown as string)).toEqual(user.id as number);
         expect(order.status).toEqual('new');
     });
