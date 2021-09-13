@@ -1,4 +1,4 @@
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import supertest from 'supertest';
 import { User } from '../../models/user';
 import StoreFrontServer from '../../server/storefrontServer';

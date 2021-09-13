@@ -71,7 +71,7 @@ describe("Order Model", () => {
             status: 'closed'
         });
 
-        expect(parseInt(order2.user_id as unknown as string)).toEqual(order2.id as number);
+        expect(parseInt(order2.user_id as unknown as string)).toEqual(user2.id as number);
         expect(order2.status).toEqual('closed');
     });
 
