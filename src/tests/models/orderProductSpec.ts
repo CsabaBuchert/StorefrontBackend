@@ -95,6 +95,20 @@ describe("OrderProduct Model", () => {
         expect(orderProduct2.quantity).toEqual(100);
     });
 
+    it('edit method should edit an order product', async () => {
+        const id = orderProduct2.id;
+        orderProduct2 = await orderProductStore.edit({
+            id: id,
+            order_id: order2.id as number,
+            product_id: product2.id as number,
+            quantity: 101
+        });
+
+        expect(parseInt(orderProduct2.order_id as unknown as string)).toEqual(order2.id as number);
+        expect(parseInt(orderProduct2.product_id as unknown as string)).toEqual(product2.id as number);
+        expect(orderProduct2.quantity).toEqual(101);
+    });
+
     it('index method should return a list of order products', async () => {
         const result = await orderProductStore.index();
 
@@ -106,7 +120,7 @@ describe("OrderProduct Model", () => {
 
         expect(parseInt(result[1].order_id as unknown as string)).toEqual(order2.id as number);
         expect(parseInt(result[1].product_id as unknown as string)).toEqual(product2.id as number);
-        expect(result[1].quantity).toEqual(100);
+        expect(result[1].quantity).toEqual(101);
     });
 
     it('show method should return the correct order product', async () => {
@@ -124,7 +138,7 @@ describe("OrderProduct Model", () => {
         expect(result.length).toEqual(1);
         expect(parseInt(result[0].order_id as unknown as string)).toEqual(order2.id as number);
         expect(parseInt(result[0].product_id as unknown as string)).toEqual(product2.id as number);
-        expect(result[0].quantity).toEqual(100);
+        expect(result[0].quantity).toEqual(101);
     });
 
     it('deleteAll method should remove order products', async () => {

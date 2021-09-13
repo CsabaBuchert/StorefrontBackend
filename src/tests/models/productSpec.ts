@@ -45,6 +45,20 @@ describe("Product Model", () => {
         expect(product2.category).toEqual('pc accessories');
     });
 
+    it('edit method should edit a product', async () => {
+        const id = product2.id;
+        product2 = await store.edit({
+            id: id,
+            name: 'Mouse',
+            price: 3,
+            category: "pc accessories"
+        });
+
+        expect(product2.name).toEqual('Mouse');
+        expect(product2.price).toEqual(3);
+        expect(product2.category).toEqual('pc accessories');
+    });
+
     it('index method should return a list of products', async () => {
         const result = await store.index();
 
@@ -55,7 +69,7 @@ describe("Product Model", () => {
         expect(result[0].category).toEqual('pc accessories');
 
         expect(result[1].name).toEqual('Mouse');
-        expect(result[1].price).toEqual(2);
+        expect(result[1].price).toEqual(3);
         expect(result[1].category).toEqual('pc accessories');
     });
 
@@ -73,7 +87,7 @@ describe("Product Model", () => {
 
         expect(result.length).toEqual(1);
         expect(result[0].name).toEqual('Mouse');
-        expect(result[0].price).toEqual(2);
+        expect(result[0].price).toEqual(3);
         expect(result[0].category).toEqual('pc accessories');
     });
 

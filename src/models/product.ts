@@ -18,7 +18,7 @@ export class ProductStore extends ModelStoreBase<Product> {
     }
 
     async edit(product: Product): Promise<Product> {
-        const result = await this.runQuery(`UPDATE ${this.database} SET name = $2 price = $3 category = $4) WHERE id=$1`, [product.id, product.name, product.price, product.category]);
+        const result = await this.runQuery(`UPDATE ${this.database} SET name = $2, price = $3, category = $4 WHERE id=$1 RETURNING *`, [product.id, product.name, product.price, product.category]);
         return result.rows[0];
     }
 }

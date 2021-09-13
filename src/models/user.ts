@@ -24,7 +24,7 @@ export class UserStore extends ModelStoreBase<User> {
 
     async edit(user: User): Promise<User> {
         const hash = bcrypt.hashSync(user.password + this.pepper, this.saltRounds);
-        const result = await this.runQuery(`UPDATE ${this.database} SET first_name = $2 last_name = $3 password = $4) WHERE id=$1`, [user.id, user.first_name, user.last_name, hash]);
+        const result = await this.runQuery(`UPDATE ${this.database} SET first_name = $2, last_name = $3, password = $4 WHERE id=$1 RETURNING *`, [user.id, user.first_name, user.last_name, hash]);
         return result.rows[0];
     }
 

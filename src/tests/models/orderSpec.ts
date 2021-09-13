@@ -11,8 +11,6 @@ let user2: User;
 
 describe("Order Model", () => {
     beforeAll(async () => {
-        console.log('Order Model - beforeAll');
-
         user1 = await userStore.create({
             first_name: 'User',
             last_name: 'One',
@@ -46,9 +44,6 @@ describe("Order Model", () => {
     });
 
     it('create method should add an order', async () => {
-        console.log('u1: ' + user1.id);
-        console.log('u2: ' + user2.id);
-
         order1 = await store.create({
             user_id: user1.id as number,
             status: 'pending'
@@ -66,6 +61,18 @@ describe("Order Model", () => {
         expect(order2.status).toEqual('completed');
     });
 
+    it('edit method should edit an order', async () => {
+        const id = order2.id;
+        order2 = await store.edit({
+            id: id,
+            user_id: user2.id as number,
+            status: 'closed'
+        });
+
+        expect(parseInt(order2.user_id as unknown as string)).toEqual(order2.id as number);
+        expect(order2.status).toEqual('closed');
+    });
+
     it('index method should return a list of orders', async () => {
         const result = await store.index();
 
@@ -75,7 +82,7 @@ describe("Order Model", () => {
         expect(result[0].status).toEqual('pending');
 
         expect(parseInt(result[1].user_id as unknown as string)).toEqual(user2.id as number);
-        expect(result[1].status).toEqual('completed');
+        expect(result[1].status).toEqual('closed');
     });
 
     it('show method should return the correct order', async () => {
@@ -91,7 +98,7 @@ describe("Order Model", () => {
 
         expect(result.length).toEqual(1);
         expect(parseInt(result[0].user_id as unknown as string)).toEqual(user2.id as number);
-        expect(result[0].status).toEqual('completed');
+        expect(result[0].status).toEqual('closed');
     });
 
     it('deleteAll method should remove orders', async () => {
