@@ -1,3 +1,53 @@
+## Usage
+#### Setup database
+    CREATE USER test_user WITH PASSWORD 'password123';
+    CREATE DATABASE shopping;
+    CREATE DATABASE shopping_test;
+    GRANT ALL PRIVILEGES ON DATABASE shopping TO test_user;
+    GRANT ALL PRIVILEGES ON DATABASE shopping_test TO test_user;
+#### Setup environment
+    Create a .env file
+    Put these lines into it and fill it with required data
+        POSTGRES_HOST=127.0.0.1
+        POSTGRES_DB=shopping
+        POSTGRES_TEST_DB=shopping_test
+        POSTGRES_USER=test_user
+        POSTGRES_PASSWORD=password123
+
+        SALT_ROUNDS=10
+        BCRYPT_PASSWORD=this-is-pepper
+
+        TOKEN_SECRET=this-is-jws-secret
+
+    If you want to run tests, put this extra line to .env file
+        ENV=test
+#### Create databases
+    Create shopping databases
+        db-migrate up
+#### Start server
+    npm run watch
+    Settings:
+        host: 127.0.0.1
+        port: 5000
+        url base: http://127.0.0.1:5000/store_front
+#### Samples
+    Create user
+        [post] http://127.0.0.1:5000/store_front/users
+    Get users
+        [Get] http://127.0.0.1:5000/store_front/users
+    Create product
+        [post] http://127.0.0.1:5000/store_front/products
+    Get products
+        [Get] http://127.0.0.1:5000/store_front/products
+#### Run test
+    Not necessary to setup test db environment before run test, build, miration up and down inculeded in test scripts
+    Run test with jasmine
+        npm run test
+    Run test with jasmine-ts
+        npm run test-ts
+
+
+## Notes to myself
 1. postgres setup on windows
     - download and install: https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
     - add psql's bin folder to path enviroment variable
