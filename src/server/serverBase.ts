@@ -3,14 +3,14 @@ import ServerCreator from "./serverCreator";
 import express from "express";
 
 export default class ServerBase {
-    private _app;
-    private _port: number;
-    private _api_name: string;
+    public app;
+    public port: number;
+    public api_name: string;
 
     constructor(port: number, api_name: string) {
-        this._app = ServerCreator.getInstance().getServer(port);
-        this._port = port;
-        this._api_name = api_name;
+        this.app = ServerCreator.getInstance().getServer(port);
+        this.port = port;
+        this.api_name = api_name;
 
         this.app.use(bodyParser.json())
 
@@ -24,18 +24,6 @@ export default class ServerBase {
                 );
             }
         });
-    }
-
-    public get app() {
-        return this._app;
-    }
-
-    protected get api_name(): string {
-        return this._api_name;
-    }
-
-    public get port(): number {
-        return this._port;
     }
 
     public startListening(): void {
