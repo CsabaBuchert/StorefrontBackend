@@ -1,7 +1,7 @@
 import Client from '../database'
 import { QueryResult } from 'pg';
 
-export class ModelStoreBase<ModelType> {
+export abstract class ModelStoreBase<ModelType> {
     protected database: string;
 
     constructor(database: string) {
@@ -34,6 +34,10 @@ export class ModelStoreBase<ModelType> {
         const result = await this.runQuery(`SELECT * FROM ${this.database} WHERE id=($1)`, [id]);
         return result.rows[0];
     }
+
+    abstract create(order: ModelType): Promise<ModelType>;
+
+    abstract edit(order: ModelType): Promise<ModelType>;
 
     async delete(id: string): Promise<ModelType> {
         const result = await this.runQuery(`DELETE FROM ${this.database} WHERE id=($1)`, [id]);

@@ -1,15 +1,12 @@
-import express, { Request, Response } from 'express'
-import bodyParser from 'body-parser'
+import HelloWorldServer from './server/helloWorldServer'
+import StoreFrontServer from './server/storefrontServer'
 
-const app: express.Application = express()
-const address: string = "0.0.0.0:3000"
+// usage:
+// http://localhost:5000/hello_world
+const HelloWorldApi = new HelloWorldServer(5000);
+HelloWorldApi.startListening();
 
-app.use(bodyParser.json())
-
-app.get('/', function (req: Request, res: Response) {
-    res.send('Hello World!')
-})
-
-app.listen(3000, function () {
-    console.log(`starting app on: ${address}`)
-})
+// usage:
+// http://localhost:5000/store_front
+const StoreFrontApi = new StoreFrontServer(5000);
+StoreFrontApi.startListening();
