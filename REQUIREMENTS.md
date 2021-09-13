@@ -32,12 +32,13 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 #### User
 - id
+- user_name
 - first_name
 - last_name
 - password
 
 ###### Table:
-    Users (id: serial key, first_name: varchar, last_name: varchar, password: varchar)
+    Users (id: serial key, user_name: varchar, first_name: varchar, last_name: varchar, password: varchar)
 
 #### Orders
 - id

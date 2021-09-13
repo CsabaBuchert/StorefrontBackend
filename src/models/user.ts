@@ -3,6 +3,7 @@ import bcrypt from "bcrypt"
 
 export type User = {
     id?: number;
+    user_name: string;
     first_name: string;
     last_name: string;
     password: string;
@@ -18,18 +19,18 @@ export class UserStore extends ModelStoreBase<User> {
 
     async create(user: User): Promise<User> {
         const hash = bcrypt.hashSync(user.password + this.pepper, this.saltRounds);
-        const result = await this.runQuery(`INSERT INTO ${this.database} (first_name, last_name, password) VALUES($1, $2, $3) RETURNING *`, [user.first_name, user.last_name, hash]);
+        const result = await this.runQuery(`INSERT INTO ${this.database} (user_name, first_name, last_name, password) VALUES($1, $2, $3, $4) RETURNING *`, [user.user_name, user.first_name, user.last_name, hash]);
         return result.rows[0];
     }
 
     async edit(user: User): Promise<User> {
         const hash = bcrypt.hashSync(user.password + this.pepper, this.saltRounds);
-        const result = await this.runQuery(`UPDATE ${this.database} SET first_name = $2, last_name = $3, password = $4 WHERE id=$1 RETURNING *`, [user.id, user.first_name, user.last_name, hash]);
+        const result = await this.runQuery(`UPDATE ${this.database} SET user_name = $2, first_name = $3, last_name = $4, password = $5 WHERE id=$1 RETURNING *`, [user.id, user.user_name, user.first_name, user.last_name, hash]);
         return result.rows[0];
     }
 
-    async authenticate(first_name: string, last_name: string, password: string): Promise<User | null> {
-        const result = await this.runQuery(`SELECT * FROM ${this.database} WHERE first_name=($1) AND last_name=($2)`, [first_name, last_name]);
+    async authenticate(user_name: string, password: string): Promise<User | null> {
+        const result = await this.runQuery(`SELECT * FROM ${this.database} WHERE user_name=($1)`, [user_name]);
 
         if (result.rows.length) {
             const user = result.rows[0];

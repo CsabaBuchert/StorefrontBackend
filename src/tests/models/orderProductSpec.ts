@@ -22,11 +22,13 @@ let product2: Product;
 describe("OrderProduct Model", () => {
     beforeAll(async () => {
         user1 = await userStore.create({
+            user_name: 'UserOne',
             first_name: 'User',
             last_name: 'One',
             password: "pass1"
         });
         user2 = await userStore.create({
+            user_name: 'UserTwo',
             first_name: 'User',
             last_name: 'Two',
             password: "pass2"

@@ -31,18 +31,22 @@ describe("User Model", () => {
 
     it('create method should add a user', async () => {
         user1 = await store.create({
+            user_name: 'UserOne',
             first_name: 'User',
             last_name: 'One',
             password: "pass1"
         });
+        expect(user1.user_name).toEqual('UserOne');
         expect(user1.first_name).toEqual('User');
         expect(user1.last_name).toEqual('One');
 
         user2 = await store.create({
+            user_name: 'UserTwo',
             first_name: 'User',
             last_name: 'Two',
             password: "pass2"
         });
+        expect(user2.user_name).toEqual('UserTwo');
         expect(user2.first_name).toEqual('User');
         expect(user2.last_name).toEqual('Two');
     });
@@ -51,11 +55,13 @@ describe("User Model", () => {
         const id = user2.id;
         user2 = await store.edit({
             id: id,
+            user_name: 'UserTwo',
             first_name: "User",
             last_name: "EditedTwo",
             password: "pass2"
         });
 
+        expect(user2.user_name).toEqual('UserTwo');
         expect(user2.first_name).toEqual('User');
         expect(user2.last_name).toEqual('EditedTwo');
     });
@@ -65,9 +71,11 @@ describe("User Model", () => {
 
         expect(result.length).toEqual(2);
 
+        expect(result[0].user_name).toEqual('UserOne');
         expect(result[0].first_name).toEqual('User');
         expect(result[0].last_name).toEqual('One');
 
+        expect(result[1].user_name).toEqual('UserTwo');
         expect(result[1].first_name).toEqual('User');
         expect(result[1].last_name).toEqual('EditedTwo');
     });
@@ -75,22 +83,24 @@ describe("User Model", () => {
     it('show method should return the correct user', async () => {
         const result = await store.show(user1.id as unknown as string);
 
+        expect(result.user_name).toEqual('UserOne');
         expect(result.first_name).toEqual('User');
         expect(result.last_name).toEqual('One');
     });
 
     it('authenticate method should validate the user', async () => {
-        const result = await store.authenticate('User', 'EditedTwo', 'pass2');
+        const result = await store.authenticate('UserTwo', 'pass2');
 
         expect(result).not.toBeNull();
         if (result) {
+            expect(result.user_name).toEqual('UserTwo');
             expect(result.first_name).toEqual('User');
             expect(result.last_name).toEqual('EditedTwo');
         }
     });
 
     it('authenticate method should reject the user', async () => {
-        const result = await store.authenticate('User', 'EditedTwo', 'invalidpass');
+        const result = await store.authenticate('UserTwo', 'invalidpass');
 
         expect(result).toBeNull();
     });
@@ -100,6 +110,7 @@ describe("User Model", () => {
         const result = await store.index();
 
         expect(result.length).toEqual(1);
+        expect(result[0].user_name).toEqual('UserTwo');
         expect(result[0].first_name).toEqual('User');
         expect(result[0].last_name).toEqual('EditedTwo');
     });
