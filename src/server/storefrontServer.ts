@@ -31,6 +31,12 @@ export default class StoreFrontServer extends ServerBase {
         this.app.post(`/${this.api_name}/orders/:id`, (req, res) => this.orderHandler.edit(req, res));
         this.app.delete(`/${this.api_name}/orders`, (req, res) => this.orderHandler.delete(req, res));
 
+        this.app.get(`/${this.api_name}/orderProducts`, (req, res) => this.orderHandler.index(req, res));
+        this.app.get(`/${this.api_name}/orderProducts/:id`, (req, res) => this.orderHandler.show(req, res));
+        this.app.post(`/${this.api_name}/orderProducts`, (req, res) => this.orderHandler.create(req, res));
+        this.app.post(`/${this.api_name}/orderProducts/:id`, (req, res) => this.orderHandler.edit(req, res));
+        this.app.delete(`/${this.api_name}/orderProducts`, (req, res) => this.orderHandler.delete(req, res));
+
         process.on("unhandledRejection", (error) => {
             console.log("unhandledRejection", error);
         });
